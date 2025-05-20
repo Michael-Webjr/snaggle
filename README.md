@@ -1,4 +1,4 @@
-# TypeScript Example
+# Snaggle - React Native Social App
 
 <p>
   <!-- iOS -->
@@ -9,27 +9,85 @@
   <img alt="Supports Expo Web" longdesc="Supports Expo Web" src="https://img.shields.io/badge/web-4630EB.svg?style=flat-square&logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff" />
 </p>
 
-```sh
-npx create-expo --example with-typescript
+Snaggle is a modern React Native app built with TypeScript that helps simplify your shared living experience. Whether coordinating with roommates, family, dormmates, or any shared living arrangement, Snaggle makes it easy to manage shared responsibilities.
+
+## 🚀 Features
+
+- **Social Authentication**: Login with Google, Apple, or Facebook
+- **Modern UI**: Sleek design with smooth animations and responsive layout
+- **TypeScript Integration**: Full TypeScript support for better development experience
+
+## 📱 Project Structure
+
+```
+project-root/
+├── App.tsx                 # Main application component
+├── components/             # Reusable UI components
+│   ├── Header.tsx          # App logo and name
+│   ├── AnimatedTitle.tsx   # Main title with word rotation
+│   ├── AnimatedSlogan.tsx  # Sliding slogans
+│   ├── SocialButtons.tsx   # Social login buttons
+│   └── SignIn.tsx          # Sign in section
+├── constants/              # App-wide constants
+├── utils/                  # Utility functions
+├── styles/                 # Shared styles
+├── types/                  # TypeScript type definitions
+├── hooks/                  # Custom React hooks
+├── navigation/             # Navigation setup
+└── screens/                # Full screens
 ```
 
-TypeScript is a superset of JavaScript which gives you static types and powerful tooling in Visual Studio Code including autocompletion and useful inline warnings for type errors.
+## 🛠️ Setup & Development
 
-## 🚀 How to use
+### Prerequisites
 
-#### Creating a new project
+- Node.js
+- npm or yarn
+- Expo CLI
 
-- Create a project: `npx create-expo --example with-typescript`
-- `cd` into the project
+### Installation
 
-### Adding TypeScript to existing projects
+```sh
+# Clone the repository
+git clone [repository-url]
 
-- Create a blank TypeScript config: `touch tsconfig.json`
-- Run `yarn start` or `npm run start` to automatically configure TypeScript
-- Rename files to TypeScript, `.tsx` for React components and `.ts` for plain typescript files
+# Navigate to the project
+cd snaggle
 
-> 💡 You can disable the TypeScript setup in Expo CLI with the environment variable `EXPO_NO_TYPESCRIPT_SETUP=1 expo start`
+# Install dependencies
+npm install
 
-## 📝 Notes
+# Start the development server
+npm start
+```
 
-- [Expo TypeScript guide](https://docs.expo.dev/versions/latest/guides/typescript/)
+### TypeScript Support
+
+This project is built with TypeScript for improved developer experience:
+
+- Static type checking
+- Enhanced IDE support
+- Better code organization
+
+## 📝 Development Guidelines
+
+- Follow the established project structure
+- Use the shared color system from `styles/colors.ts`
+- Leverage the responsive design hooks
+- Component props should be properly typed
+
+## 📚 Additional Resources
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Native Documentation](https://reactnative.dev/docs/getting-started)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+
+## 👥 Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Open a pull request with a clear description of changes
+
+## 📄 License
+
+[Specify your license here]
