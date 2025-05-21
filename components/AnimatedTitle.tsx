@@ -1,8 +1,15 @@
-// components/AnimatedTitle.tsx
+// components/AnimatedTitle.tsx - Fully Fixed Version
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, Animated, StyleSheet } from 'react-native';
-import { useResponsive } from '../hooks/useResponsive';
+import { 
+  View, 
+  Text, 
+  Animated, 
+  StyleSheet, 
+  Platform,
+  Easing, // Import Easing directly from react-native
+} from 'react-native';
 import { rotatingWords } from '../constants/rotatingWords';
+import { useResponsive } from '../hooks/useResponsive';
 import { colors } from '../styles/colors';
 
 const AnimatedTitle: React.FC = () => {
@@ -16,16 +23,23 @@ const AnimatedTitle: React.FC = () => {
       // Fade out
       Animated.timing(wordFadeAnim, {
         toValue: 0,
-        duration: 500,
+        duration: 350,
         useNativeDriver: true,
+        easing: Platform.OS === 'ios' ? 
+          Easing.cubic : // Use imported Easing
+          Easing.out(Easing.quad),
       }).start(() => {
         // Change word
         setCurrentWordIndex((prevIndex) => (prevIndex + 1) % rotatingWords.length);
+        
         // Fade in
         Animated.timing(wordFadeAnim, {
           toValue: 1,
-          duration: 500,
+          duration: 350,
           useNativeDriver: true,
+          easing: Platform.OS === 'ios' ? 
+            Easing.cubic : 
+            Easing.in(Easing.quad),
         }).start();
       });
     }, 3000);
@@ -33,7 +47,7 @@ const AnimatedTitle: React.FC = () => {
     return () => {
       clearInterval(wordInterval);
     };
-  }, [wordFadeAnim]);
+  }, []);
 
   return (
     <View style={styles.titleContainer}>
