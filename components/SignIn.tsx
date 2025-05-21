@@ -1,8 +1,9 @@
-// components/SignIn.tsx
+// components/SignIn.tsx - Updated with SmoothButton
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { useResponsive } from '../hooks/useResponsive';
 import { colors } from '../styles/colors';
+import SmoothButton from './SmoothButton';
 
 const SignIn: React.FC = () => {
   const { spacing } = useResponsive();
@@ -10,9 +11,15 @@ const SignIn: React.FC = () => {
   return (
     <View style={[styles.signInSection, { marginBottom: spacing }]}>
       <Text style={styles.signInPrompt}>Have an account already?</Text>
-      <TouchableOpacity style={styles.signInButton}>
-        <Text style={styles.signInButtonText}>Sign in</Text>
-      </TouchableOpacity>
+      
+      {/* Replace TouchableOpacity with SmoothButton */}
+      <SmoothButton 
+        title="Sign in" 
+        onPress={() => {}} 
+        style={styles.signInButton}
+        textStyle={styles.signInButtonText}
+        backgroundColor={colors.purple.dark}
+      />
     </View>
   );
 };
@@ -28,9 +35,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   signInButton: {
-    backgroundColor: colors.purple.dark,
     borderRadius: 50,
-    paddingVertical: 12,
   },
   signInButtonText: {
     color: colors.text.primary,

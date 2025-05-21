@@ -1,6 +1,6 @@
-// App.tsx - Complete clean version
-import React from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Platform } from 'react-native';
+// App.tsx - Completely fixed version
+import React, { useEffect } from 'react';
+import { View, Text, SafeAreaView, StyleSheet, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 // Import shared utilities and styles
@@ -13,9 +13,17 @@ import AnimatedTitle from './components/AnimatedTitle';
 import AnimatedSlogan from './components/AnimatedSlogan';
 import SocialButtons from './components/SocialButtons';
 import SignIn from './components/SignIn';
+import SmoothButton from './components/SmoothButton';
+import { animateLayout } from './components/AnimatedLayout';
 
 // Main App component
 const App: React.FC = () => {
+  // Add layout animation when component mounts
+  useEffect(() => {
+    // Animate layout when component mounts
+    animateLayout('transitionIn');
+  }, []);
+
   return (
     <View style={styles.container}>
       {/* Light to Medium Gradient Background - Full Screen */}
@@ -42,10 +50,14 @@ const App: React.FC = () => {
           {/* Social Sign-In Buttons */}
           <SocialButtons />
 
-          {/* Create Account Button */}
-          <TouchableOpacity style={styles.createAccountButton}>
-            <Text style={styles.createAccountButtonText}>Create account</Text>
-          </TouchableOpacity>
+          {/* Create Account Button - Now using SmoothButton */}
+          <SmoothButton 
+            title="Create account" 
+            onPress={() => {}} 
+            style={styles.createAccountButton}
+            textStyle={styles.createAccountButtonText}
+            backgroundColor={colors.purple.dark}
+          />
           
           {/* Terms Text - Right below the create account button */}
           <Text style={styles.termsText}>
@@ -87,9 +99,7 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === 'ios' ? 16 : 8,
   },
   createAccountButton: {
-    backgroundColor: colors.purple.dark,
     borderRadius: 50,
-    paddingVertical: 12,
     marginBottom: 8,
   },
   createAccountButtonText: {
