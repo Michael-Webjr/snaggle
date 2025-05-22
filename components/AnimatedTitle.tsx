@@ -1,4 +1,4 @@
-// components/AnimatedTitle.tsx - Fully Fixed Version
+// components/AnimatedTitle.tsx - With responsive text layout
 import React, { useRef, useState, useEffect } from 'react';
 import { 
   View, 
@@ -6,7 +6,7 @@ import {
   Animated, 
   StyleSheet, 
   Platform,
-  Easing, // Import Easing directly from react-native
+  Easing,
 } from 'react-native';
 import { rotatingWords } from '../constants/rotatingWords';
 import { useResponsive } from '../hooks/useResponsive';
@@ -16,23 +16,23 @@ const AnimatedTitle: React.FC = () => {
   const { screenWidth } = useResponsive();
   const [currentWordIndex, setCurrentWordIndex] = useState<number>(0);
   const wordFadeAnim = useRef(new Animated.Value(1)).current;
+  
+  // Calculate font size based on screen width
+  const fontSize = Math.min(30, screenWidth * 0.075);
+  const lineHeight = fontSize * 1.2; // Maintain proper line height ratio
 
   useEffect(() => {
-    // Setup interval for word rotation
     const wordInterval = setInterval(() => {
-      // Fade out
       Animated.timing(wordFadeAnim, {
         toValue: 0,
         duration: 350,
         useNativeDriver: true,
         easing: Platform.OS === 'ios' ? 
-          Easing.cubic : // Use imported Easing
+          Easing.cubic : 
           Easing.out(Easing.quad),
       }).start(() => {
-        // Change word
         setCurrentWordIndex((prevIndex) => (prevIndex + 1) % rotatingWords.length);
         
-        // Fade in
         Animated.timing(wordFadeAnim, {
           toValue: 1,
           duration: 350,
@@ -51,21 +51,34 @@ const AnimatedTitle: React.FC = () => {
 
   return (
     <View style={styles.titleContainer}>
-      <Text style={[styles.mainTitle, { fontSize: Math.min(34, screenWidth * 0.082) }]}>
-        Endless ways to simplify your{' '}
+      {/* First line */}
+      <Text style={[styles.mainTitle, { fontSize, lineHeight }]}>
+        Endless ways to
+      </Text>
+      
+      {/* Second line */}
+      <Text style={[styles.mainTitle, { fontSize, lineHeight }]}>
+        simplify your
+      </Text>
+      
+      {/* Third line - always starts with the rotating word */}
+      <View style={styles.rotatingLine}>
         <Animated.Text 
           style={[
             styles.rotatingWord, 
             { 
               opacity: wordFadeAnim,
-              fontSize: Math.min(34, screenWidth * 0.082)
+              fontSize,
+              lineHeight
             }
           ]}
         >
           {rotatingWords[currentWordIndex]}
         </Animated.Text>
-        {' '}life.
-      </Text>
+        <Text style={[styles.mainTitle, { fontSize, lineHeight }]}>
+          {' '}life.
+        </Text>
+      </View>
     </View>
   );
 };
@@ -77,14 +90,17 @@ const styles = StyleSheet.create({
   mainTitle: {
     fontWeight: '800',
     color: colors.text.primary,
-    lineHeight: 42,
     letterSpacing: -0.5,
   },
   rotatingWord: {
     fontWeight: '800',
     color: '#000000', // Black
-    lineHeight: 42,
     letterSpacing: -0.5,
+  },
+  rotatingLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'nowrap', // Prevent wrapping
   },
 });
 
