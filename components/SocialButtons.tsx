@@ -5,28 +5,41 @@ import { AntDesign } from '@expo/vector-icons';
 import { useResponsive } from '../hooks/useResponsive';
 import { colors } from '../styles/colors';
 
-const SocialButtons: React.FC = () => {
+interface SocialButtonsProps {
+  onSocialAuth?: () => void;
+}
+
+export default function SocialButtons({ onSocialAuth }: SocialButtonsProps) {
   const { spacing } = useResponsive();
   
   return (
     <View style={[styles.socialContainer, { gap: spacing }]}>
-      <TouchableOpacity style={styles.googleButton}>
+      <TouchableOpacity 
+        style={styles.googleButton}
+        onPress={onSocialAuth}
+      >
         <AntDesign name="google" size={20} color={colors.social.google} />
         <Text style={styles.socialButtonTextDark}>Continue with Google</Text>
       </TouchableOpacity>
       
-      <TouchableOpacity style={styles.appleButton}>
+      <TouchableOpacity 
+        style={styles.appleButton}
+        onPress={onSocialAuth}
+      >
         <AntDesign name="apple1" size={20} color="white" />
         <Text style={styles.socialButtonTextWhite}>Continue with Apple</Text>
       </TouchableOpacity>
       
-      <TouchableOpacity style={styles.facebookButton}>
+      <TouchableOpacity 
+        style={styles.facebookButton}
+        onPress={onSocialAuth}
+      >
         <AntDesign name="facebook-square" size={20} color="white" />
         <Text style={styles.socialButtonTextWhite}>Continue with Facebook</Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   socialContainer: {
@@ -79,5 +92,3 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
   },
 });
-
-export default SocialButtons;

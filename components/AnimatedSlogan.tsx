@@ -1,10 +1,12 @@
-// components/AnimatedSlogan.tsx - Fixed version
+// components/AnimatedSlogan.tsx - With fixed height container
 import React, { useRef, useState, useEffect } from 'react';
 import { 
   Animated, 
   StyleSheet, 
   Platform,
-  Easing // Import Easing directly from react-native
+  Easing,
+  View,
+  Dimensions,
 } from 'react-native';
 import { getRandomSlogan } from '../utils/slogans';
 
@@ -12,6 +14,13 @@ const AnimatedSlogan: React.FC = () => {
   const [slogan, setSlogan] = useState<string>('');
   const slideAnim = useRef(new Animated.Value(0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
+  
+  // Get screen dimensions to calculate appropriate heights
+  const { width } = Dimensions.get('window');
+  
+  // Calculate a fixed height for the slogan container
+  // Enough for two lines at the current font size
+  const sloganContainerHeight = 60; // Adjust this value as needed
 
   useEffect(() => {
     // Set initial slogan
@@ -67,26 +76,33 @@ const AnimatedSlogan: React.FC = () => {
   if (!slogan) return null;
 
   return (
-    <Animated.Text 
-      style={[
-        styles.slogan, 
-        { 
-          transform: [{ translateX: slideAnim }],
-          opacity: opacityAnim,
-        }
-      ]}
-    >
-      {slogan}
-    </Animated.Text>
+    <View style={[styles.sloganContainer, { height: sloganContainerHeight }]}>
+      <Animated.Text 
+        style={[
+          styles.slogan, 
+          { 
+            transform: [{ translateX: slideAnim }],
+            opacity: opacityAnim,
+          }
+        ]}
+        numberOfLines={2}  // Allow maximum of 2 lines
+      >
+        {slogan}
+      </Animated.Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  sloganContainer: {
+    // Fixed height container
+    justifyContent: 'center', // Center slogan vertically in container
+    marginBottom: 32,
+  },
   slogan: {
     fontSize: 17,
     fontWeight: '700',
     lineHeight: 22,
-    marginBottom: 32,
     color: '#000000',
   },
 });
