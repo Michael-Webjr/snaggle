@@ -1,7 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": false,
+    "strict": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -13,6 +13,10 @@
     "isolatedModules": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "types": [
       "react",
       "react-native"
@@ -21,9 +25,16 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "types/**/*.d.ts"
+    "types/**/*.d.ts",
+    "constants/**/*.ts",
+    "utils/**/*.ts",
+    "navigation/**/*.ts",
+    "screens/**/*.tsx",
+    "components/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "build"
   ]
 }

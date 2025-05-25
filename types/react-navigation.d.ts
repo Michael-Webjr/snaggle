@@ -1,36 +1,34 @@
 // types/react-navigation.d.ts
-/// <reference types="react" />
+import type { ComponentType } from 'react';
+import type { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
+import type { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 declare module '@react-navigation/native-stack' {
-  import { ComponentType } from 'react';
-  
-  export function createNativeStackNavigator<T = any>(): {
+  export function createNativeStackNavigator<ParamList = Record<string, object | undefined>>(): {
     Navigator: ComponentType<{
       children?: React.ReactNode;
-      screenOptions?: any;
-      initialRouteName?: string;
+      screenOptions?: NativeStackNavigationOptions | ((props: any) => NativeStackNavigationOptions);
+      initialRouteName?: keyof ParamList;
     }>;
     Screen: ComponentType<{
       name: string;
       component: ComponentType<any>;
-      options?: any;
+      options?: NativeStackNavigationOptions | ((props: any) => NativeStackNavigationOptions);
     }>;
   };
 }
 
 declare module '@react-navigation/bottom-tabs' {
-  import { ComponentType } from 'react';
-  
-  export function createBottomTabNavigator<T = any>(): {
+  export function createBottomTabNavigator<ParamList = Record<string, object | undefined>>(): {
     Navigator: ComponentType<{
       children?: React.ReactNode;
-      screenOptions?: any;
-      initialRouteName?: string;
+      screenOptions?: BottomTabNavigationOptions | ((props: any) => BottomTabNavigationOptions);
+      initialRouteName?: keyof ParamList;
     }>;
     Screen: ComponentType<{
       name: string;
       component: ComponentType<any>;
-      options?: any;
+      options?: BottomTabNavigationOptions | ((props: any) => BottomTabNavigationOptions);
     }>;
   };
 }

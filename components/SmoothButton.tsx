@@ -1,4 +1,4 @@
-// components/SmoothButton.tsx - Fixed version
+// components/SmoothButton.tsx - Enhanced version with icon support
 import React, { useRef } from 'react';
 import { 
   Text, 
@@ -7,6 +7,7 @@ import {
   ViewStyle, 
   TextStyle,
   Animated,
+  View,
 } from 'react-native';
 
 interface SmoothButtonProps {
@@ -16,6 +17,7 @@ interface SmoothButtonProps {
   textStyle?: TextStyle;
   backgroundColor?: string;
   activeOpacity?: number;
+  children?: React.ReactNode; // For icons
 }
 
 const SmoothButton: React.FC<SmoothButtonProps> = ({
@@ -25,6 +27,7 @@ const SmoothButton: React.FC<SmoothButtonProps> = ({
   textStyle,
   backgroundColor = '#4C1D95',
   activeOpacity = 0.8,
+  children,
 }) => {
   // Create animated values for scale and opacity
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -68,7 +71,7 @@ const SmoothButton: React.FC<SmoothButtonProps> = ({
       onPress={onPress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      style={({ pressed }) => [
+      style={[
         styles.container,
         { backgroundColor },
         style,
@@ -84,6 +87,7 @@ const SmoothButton: React.FC<SmoothButtonProps> = ({
           },
         ]}
       >
+        {children}
         <Text style={[styles.text, textStyle]}>{title}</Text>
       </Animated.View>
     </Pressable>
@@ -92,18 +96,21 @@ const SmoothButton: React.FC<SmoothButtonProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 50,
+    borderRadius: 12,
     overflow: 'hidden', // Needed for ripple effect containment
   },
   buttonContent: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    position: 'relative',
   },
   text: {
     color: 'white',
-    fontSize: 17,
-    fontWeight: '700',
+    fontSize: 16,
+    fontWeight: '600',
     textAlign: 'center',
   },
 });

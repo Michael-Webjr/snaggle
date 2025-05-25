@@ -1,32 +1,64 @@
 // screens/LoginScreen.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 
 // Import shared utilities and styles
 import { colors } from '../styles/colors';
-import { useResponsive } from '../hooks/useResponsive';
 
 // Import Components
 import Header from '../components/Header';
 import AnimatedTitle from '../components/AnimatedTitle';
 import AnimatedSlogan from '../components/AnimatedSlogan';
 import SocialButtons from '../components/SocialButtons';
-import SignIn from '../components/SignIn';
-import SmoothButton from '../components/SmoothButton';
+import LegalModal from '../components/LegalModal';
 import { animateLayout } from '../components/AnimatedLayout';
 
-export default function LoginScreen() {
-  const navigation = useNavigation();
+// Import types
+import type { RootStackScreenProps } from '../navigation/types';
+import { TERMS_OF_SERVICE, PRIVACY_POLICY } from '../constants/legalContent';
+
+type Props = RootStackScreenProps<'Login'>;
+
+export default function LoginScreen({ navigation }: Props) {
+  
+  // STATE: Track which modals are open
+  // useState returns [currentValue, functionToChangeValue]
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   
   useEffect(() => {
     animateLayout('transitionIn');
   }, []);
 
-  const handleAuth = () => {
-    // Type assertion to handle navigation
-    (navigation as any).navigate('Main');
+  const handleAuth = (provider?: string) => {
+    // TODO: Implement actual OAuth authentication
+    console.log(`Authenticating with ${provider || 'social provider'}`);
+    
+    // For now, navigate directly to main app
+    // In production, this will be called after successful OAuth
+    navigation.navigate('Main');
+  };
+
+  // MODAL FUNCTIONS: Open and close modals
+  const openTermsModal = () => {
+    console.log('Opening Terms modal'); // Debug log
+    setShowTermsModal(true); // Change state from false to true
+  };
+
+  const closeTermsModal = () => {
+    console.log('Closing Terms modal'); // Debug log
+    setShowTermsModal(false); // Change state from true to false
+  };
+
+  const openPrivacyModal = () => {
+    console.log('Opening Privacy modal');
+    setShowPrivacyModal(true);
+  };
+
+  const closePrivacyModal = () => {
+    console.log('Closing Privacy modal');
+    setShowPrivacyModal(false);
   };
 
   return (
@@ -42,28 +74,51 @@ export default function LoginScreen() {
         <Header />
 
         <View style={styles.content}>
-          <AnimatedTitle />
-          <AnimatedSlogan />
-          <SocialButtons onSocialAuth={handleAuth} />
+          <View style={styles.titleSection}>
+            <AnimatedTitle />
+            <AnimatedSlogan />
+          </View>
           
-          <SmoothButton 
-            title="Create account" 
-            onPress={handleAuth} 
-            style={styles.createAccountButton}
-            textStyle={styles.createAccountButtonText}
-            backgroundColor={colors.purple.dark}
-          />
-          
-          <Text style={styles.termsText}>
-            By signing up, you agree to the{' '}
-            <Text style={styles.linkText}>Terms of Service</Text> and{' '}
-            <Text style={styles.linkText}>Privacy Policy</Text>, including{' '}
-            <Text style={styles.linkText}>Cookie Use</Text>.
-          </Text>
-
-          <SignIn onSignIn={handleAuth} />
+          <View style={styles.authSection}>
+            <Text style={styles.welcomeText}>
+              Join thousands of roommates sharing smarter
+            </Text>
+            
+            <SocialButtons onSocialAuth={handleAuth} />
+            
+            <Text style={styles.termsText}>
+              By continuing, you agree to our{' '}
+              <Text 
+                style={styles.linkText}
+                onPress={openTermsModal}
+              >
+                Terms of Service
+              </Text> and{' '}
+              <Text 
+                style={styles.linkText}
+                onPress={openPrivacyModal}
+              >
+                Privacy Policy
+              </Text>
+            </Text>
+          </View>
         </View>
       </SafeAreaView>
+
+      {/* MODALS: These sit on top of everything else */}
+      <LegalModal
+        visible={showTermsModal}
+        onClose={closeTermsModal}
+        title="Terms of Service"
+        content={TERMS_OF_SERVICE}
+      />
+
+      <LegalModal
+        visible={showPrivacyModal}
+        onClose={closePrivacyModal}
+        title="Privacy Policy"
+        content={PRIVACY_POLICY}
+      />
     </View>
   );
 }
@@ -88,23 +143,31 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 24,
     justifyContent: 'space-between',
-    paddingBottom: Platform.OS === 'ios' ? 16 : 8,
+    paddingBottom: Platform.OS === 'ios' ? 24 : 16,
   },
-  createAccountButton: {
-    borderRadius: 50,
-    marginBottom: 8,
+  titleSection: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: 20,
   },
-  createAccountButtonText: {
+  authSection: {
+    paddingBottom: 20,
+  },
+  welcomeText: {
+    fontSize: 18,
+    fontWeight: '600',
     color: colors.text.primary,
-    fontSize: 17,
-    fontWeight: '700',
     textAlign: 'center',
+    marginBottom: 32,
+    lineHeight: 24,
   },
   termsText: {
-    fontSize: 11,
+    fontSize: 12,
     color: colors.text.tertiary,
-    lineHeight: 16,
-    marginBottom: 16,
+    lineHeight: 18,
+    textAlign: 'center',
+    marginTop: 24,
+    paddingHorizontal: 16,
   },
   linkText: {
     color: colors.purple.dark,
