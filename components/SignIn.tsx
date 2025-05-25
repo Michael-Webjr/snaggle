@@ -6,7 +6,7 @@ import { colors } from '../styles/colors';
 import SmoothButton from './SmoothButton';
 
 interface SignInProps {
-  onSignIn?: () => void;
+  onSignIn: () => void;
 }
 
 export default function SignIn({ onSignIn }: SignInProps) {

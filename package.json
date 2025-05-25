@@ -8,9 +8,20 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build": "expo build",
+    "build:ios": "eas build --platform ios",
+    "build:android": "eas build --platform android",
     "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "test": "jest"
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "clean": "expo r -c",
+    "prebuild": "expo prebuild",
+    "postinstall": "expo install --fix"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -18,8 +29,10 @@
     "@react-navigation/native": "^7.1.9",
     "@react-navigation/native-stack": "^7.3.13",
     "@react-navigation/stack": "^7.3.2",
+    "@types/react-navigation": "^3.0.8",
     "expo": "^53.0.4",
     "expo-linear-gradient": "~14.1.4",
+    "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "^0.79.2",
@@ -30,7 +43,24 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.22.0",
+    "@babel/preset-react": "^7.22.0",
+    "@babel/preset-typescript": "^7.22.0",
+    "@types/jest": "^29.5.0",
     "@types/react": "~19.0.10",
+    "@types/react-native": "^0.73.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.57.1",
+    "eslint-config-expo": "~9.2.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-native": "^4.1.0",
+    "jest": "^29.6.0",
+    "jest-expo": "~53.0.5",
+    "prettier": "^3.5.3",
     "typescript": "~5.8.3"
   },
   "resolutions": {
@@ -39,22 +69,96 @@
   "overrides": {
     "@types/react": "~19.0.10"
   },
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.(ts|tsx|js)",
+      "**/*.(test|spec).(ts|tsx|js)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/*.stories.{ts,tsx}"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "expo",
+      "@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "plugins": [
+      "@typescript-eslint",
+      "react-hooks",
+      "react-native"
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "react-native/no-unused-styles": "error",
+      "react-native/split-platform-components": "error",
+      "react-native/no-inline-styles": "warn"
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true,
+    "printWidth": 100,
+    "tabWidth": 2,
+    "useTabs": false,
+    "bracketSpacing": true,
+    "arrowParens": "avoid"
+  },
   "private": true,
   "keywords": [
     "react-native",
     "expo",
     "typescript",
     "marketplace",
-    "roommate"
+    "roommate",
+    "mobile-app",
+    "ios",
+    "android"
   ],
-  "author": "Your Name",
+  "author": "Your Name <your.email@example.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "your-repo-url"
+    "url": "https://github.com/yourusername/snaggle-app.git"
   },
+  "bugs": {
+    "url": "https://github.com/yourusername/snaggle-app/issues"
+  },
+  "homepage": "https://github.com/yourusername/snaggle-app#readme",
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "expo": {
+    "install": {
+      "exclude": [
+        "react-native-safe-area-context"
+      ]
+    }
   }
 }
